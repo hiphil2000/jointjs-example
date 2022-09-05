@@ -1,11 +1,12 @@
 import { dia, shapes, g, linkTools, util } from 'jointjs';
-import DomainElement from "./elements/DomainElement";
-import Record from "./elements/Record";
-import Table from "./elements/Table";
+import Table, {ITableRow, TableView} from "./elements/Table2";
 
 const nameSpace = {
 	...shapes,
-	Table
+	erd: {
+		Table,
+		TableView
+	}
 }
 
 const graph = new dia.Graph({}, {
@@ -27,27 +28,29 @@ const paper = new dia.Paper({
 
 		return true;
 	},
-    defaultRouter: { name: 'manhattan' },
+    defaultRouter: { name: 'metro' },
 });
 
-paper.on("element:pointerup", function(cell) {
-	graph.getLinks().forEach(link => {
-		// @ts-ignore
-		link.findView(paper).requestConnectionUpdate();
-	});
-});
+(window as any).paper = paper;
+
+// paper.on("element:pointerup", function(cell) {
+// 	graph.getLinks().forEach(link => {
+// 		// @ts-ignore
+// 		link.findView(paper).requestConnectionUpdate();
+// 	});
+// });
 
 
 for(let i = 0; i < 10; i++) {
+
+	const rows = [];
+	for(let j = 0; j < 10; j++) {
+		rows.push({id: `row-${j}`, name: `row-${j}`, type: `test-type-${j}`} as ITableRow);
+	}
+
 	const table = new Table({
-		attrs: {
-			title: { text: "Table" + i}
-		},
-		position: {x: 250 * (i % 5), y: 350 * Math.floor(i / 5)}
+		rows: rows,
+		position: {x: 50 + 250 * (i % 5), y: 50 + 350 * Math.floor(i / 5)}
 	});
 	table.addTo(graph);
-
-	for(let j = 0; j < 10; j++) {
-		table.addDomain("domain" + j, "TYPE_" + j);
-	}
 }
