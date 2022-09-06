@@ -28,20 +28,20 @@ export default class Table extends dia.Element {
 				},
 				text: {
 					fontFamily: "Arial",
-					fontSize: 13
+					fontSize: 13,
+					stroke: "none",
+					fill: "#000000"
 				},
 				".table_name": {
-					fontWeight: 600,
-					refX: 16,
-					refY: 8,
+					refX: 8,
+					refY: 14,
 					yAlignment: "middle"
 				},
 				".rows": {
 					refX: 0,
 				},
 				".row": {
-					fill: "transparent",
-					fontWeight: "normal"
+					fill: "transparent"
 				},
 				".btn_row-add": {
 					transform: "translate(185, -20)",
@@ -49,8 +49,8 @@ export default class Table extends dia.Element {
 				}
 			},
 			markup: `
-				<rect class="table_body"/>
-				<text class="table_name"/>
+				<rect class="table_body" />
+				<text class="table_name" />
 				<g class="rows"></g>
 				<path class="btn_row-add" d="M5,0 10,0 10,5 15,5 15,10 10,10 10,15 5,15 5,10 0,10 0,5 5,5z"/>
 			`,
@@ -95,7 +95,6 @@ export default class Table extends dia.Element {
 	}
 	
 	handleRowsChange(): void {
-		console.log("!");
 		// update attrs
 		const rows = this.get("rows") as ITableRow[];
 

@@ -14,7 +14,11 @@ module.exports = {
     mode: 'development',
     module: {
         rules: [
-            { test: /\.ts?$/, loader: 'ts-loader' }
+            { test: /\.ts?$/, loader: 'ts-loader' },
+			{
+				test: /\.css$/i,
+				use: ["style-loader", "css-loader"],
+			},
         ]
     },
     devServer: {

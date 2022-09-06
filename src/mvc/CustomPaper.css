@@ -1,0 +1,11 @@
+.joint-custom-paper>svg,
+.joint-custom-paper-background,
+.joint-custom-paper-grid {
+	position: absolute;
+}
+
+.joint-custom-paper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
