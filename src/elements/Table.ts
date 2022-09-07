@@ -134,7 +134,7 @@ export default class Table extends dia.Element {
 						id: row.id,
 						args: {
 							y: portY
-						}
+						},
 					})
 				} else {
 					this.portProp(row.id, "args/y", portY);

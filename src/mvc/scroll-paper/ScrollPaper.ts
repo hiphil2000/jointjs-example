@@ -126,7 +126,7 @@ export default class ScrollPaper {
 			// top overflow
 			this._els.containerBg.style.height = (this._els.containerBg.clientHeight + chunkHeight) + "px";
 			this.paper.setDimensions(pWidth, pHeight + chunkHeight);
-			this.paper.matrix({...matrix, f: matrix.e + chunkWidth});
+			this.paper.matrix({...matrix, f: matrix.f + chunkWidth});
 			this._els.container.scrollTop += 1000;
 		} else if (bbox.y + bbox.height > pHeight) {
 			// bottom overflow

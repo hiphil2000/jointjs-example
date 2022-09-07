@@ -63,7 +63,7 @@ zoom_reset.addEventListener("click", () => {
 })
 
 
-for(let i = 0; i < 1; i++) {
+for(let i = 0; i < 10; i++) {
 
 	const rows = [];
 	for(let j = 0; j < 10; j++) {
