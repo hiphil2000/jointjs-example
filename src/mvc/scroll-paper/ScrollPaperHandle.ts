@@ -1,4 +1,4 @@
-import {dia, V} from "jointjs"
+import {dia, V, g} from "jointjs"
 
 export interface ICustomPaperOptions extends dia.Paper.Options {
 	chunkWidth?: number;
@@ -10,7 +10,7 @@ const defaults = {
 	chunkHeight: 1000,
 } as ICustomPaperOptions
 
-export default class CustomPaper extends dia.Paper {
+export default class ScrollPaperHandle extends dia.Paper {
 	protected options: ICustomPaperOptions;
 
 	constructor(opt: ICustomPaperOptions) {
@@ -33,23 +33,19 @@ export default class CustomPaper extends dia.Paper {
 		return [{
 			namespaceURI: namespace.xhtml,
 			tagName: 'div',
-			className: 'joint-paper-custom-background',
-			attributes: {
-				'width': this.options.chunkWidth + "px",
-				'height': this.options.chunkHeight + "px",
-			},
+			className: 'joint-custom-paper-background',
 			selector: 'background'
 		}, {
 			namespaceURI: namespace.xhtml,
 			tagName: 'div',
-			className: 'joint-paper-grid',
+			className: 'joint-custom-paper-grid',
 			selector: 'grid'
 		}, {
 			namespaceURI: namespace.svg,
 			tagName: 'svg',
 			attributes: {
-				'width': this.options.chunkWidth,
-				'height': this.options.chunkHeight,
+				'width': "100%",
+				'height': "100%",
 				'xmlns:xlink': namespace.xlink
 			},
 			selector: 'svg',
@@ -69,10 +65,9 @@ export default class CustomPaper extends dia.Paper {
 	protected init(): void {
 		console.log("init");
 		super.init();
-	}
-
-	_setDimensions(): void {
-
+		this.model.on("change:position", (cell) => {
+			console.log(cell);
+		});
 	}
 
 	render(): this {
@@ -84,5 +79,18 @@ export default class CustomPaper extends dia.Paper {
 	renderChildren(children?: dia.MarkupJSON): this {
 		console.log("renderChild");
 		return super.renderChildren(children);
+	}
+
+	private onChildrenMove(): void {
+
+	}
+
+	measureViewport(): g.PlainRect {
+		return {
+			x: 0,
+			y: 0,
+			width: 100,
+			height: 100
+		}
 	}
 }

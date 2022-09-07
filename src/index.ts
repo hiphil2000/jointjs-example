@@ -1,7 +1,6 @@
-import { dia, shapes, g, linkTools, util, V } from 'jointjs';
-import CustomPaper from "./mvc/CustomPaper";
-import "./mvc/CustomPaper.css";
+import { dia, shapes } from 'jointjs';
 import Table, {ITableRow, TableView} from "./elements/Table";
+import ScrollPaper, { IScrollPaperOptions } from "./mvc/scroll-paper/ScrollPaper";
 
 const nameSpace = {
 	...shapes,
@@ -15,12 +14,12 @@ const graph = new dia.Graph({}, {
 	cellNamespace: nameSpace
 });
 
-const paper = new CustomPaper({
-	el: document.getElementById("app"),
+const paper = new ScrollPaper({
+	el: document.getElementById("paper"),
 	model: graph,
 	cellViewNamespace: nameSpace,
-	width: 2000,
-	height: 2000,
+	width: 1000,
+	height: 1000,
 	interactive: (cellview, event) => {
 		if (cellview.model.isElement()) {
 			if (cellview.model.attributes["draggable"] === false) {
@@ -32,7 +31,7 @@ const paper = new CustomPaper({
 	},
     defaultRouter: { name: 'manhattan' },
 	gridSize: 10
-} as dia.Paper.Options);
+} as IScrollPaperOptions);
 paper.drawGrid({
 	color: "#000000",
 	name: "mesh",
@@ -64,7 +63,7 @@ zoom_reset.addEventListener("click", () => {
 })
 
 
-for(let i = 0; i < 10; i++) {
+for(let i = 0; i < 1; i++) {
 
 	const rows = [];
 	for(let j = 0; j < 10; j++) {
