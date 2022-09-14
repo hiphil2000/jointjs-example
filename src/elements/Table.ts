@@ -64,7 +64,9 @@ export default class Table extends dia.Element {
 			ports: {
 				groups: {
 					"relation": {
-						position: "left",
+						// position: "left",
+						// FIXME: port position randomized for dev
+						position: Math.floor(Math.random() * 10) % 2 === 0 ? "left" : "right",
 						attrs: {
 							circle: {
 								magnet: true,
