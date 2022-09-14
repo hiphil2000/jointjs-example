@@ -57,8 +57,7 @@ paper.drawGrid({
 
 
 // EVENTS
-graph.on("add", (cell) => {
-	console.log(cell.attributes.type);
+graph.on("add", (cell: dia.Cell) => {
 	if (cell.attributes.type === "standard.Link") {
 		const linkView = cell.findView(paper.paper) as dia.LinkView;
 		linkView.addTools(new dia.ToolsView({
@@ -71,9 +70,17 @@ graph.on("add", (cell) => {
 				new linkTools.Remove()
 			]
 		}));
-	}
 
-})
+		cell.toBack();
+	}
+});
+
+paper.paper.on("link:mouseover", (cellView: dia.CellView) => {
+	cellView.model.attr("line/strokeWidth", 4);
+});
+paper.paper.on("link:mouseout", (cellView: dia.CellView) => {
+	cellView.model.attr("line/strokeWidth", 2);
+});
 
 // GENERATE TABLES
 for(let i = 0; i < 10; i++) {

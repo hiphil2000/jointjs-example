@@ -101,7 +101,7 @@ function _route(vertices: g.PlainPoint[], fromPt, fromDir, toPt, toDir) {
     const RIGHT = "right";
     const DOWN = "down";
     const LEFT = "left";
-	const MINDIST = 30;
+	const MINDIST = 20;
 	const TOL = 0.1;
 	const TOLxTOL = 0.01;
 
