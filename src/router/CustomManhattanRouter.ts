@@ -1,4 +1,5 @@
 import { dia, g, routers } from "jointjs";
+import { IsPort } from "../utils";
 
 export const enum EDirection {
 	LEFT = 0,
@@ -18,9 +19,9 @@ function GetStatus(linkView: dia.LinkView): LinkStatus {
 	const source = linkView.model.source();
 	const target = linkView.model.target();
 
-	if (source.port !== undefined && target.port === undefined) {
+	if (IsPort(source) && !IsPort(target)) {
 		return "connecting";
-	} else if (source.port !== undefined && target.port !== undefined) {
+	} else if (IsPort(source) && IsPort(target)) {
 		return "connected";
 	} else {
 		return "none";
@@ -60,7 +61,15 @@ function GetPointDirection(linkView: dia.LinkView, type: PortType): Direction {
 }
 
 function GetDirection(linkView: dia.LinkView, type: PortType): Direction {
-	if (type === "source" || GetStatus(linkView) === "connected") {
+	let connData;
+
+	if (type === "source") {
+		connData = linkView.model.source();
+	} else {
+		connData = linkView.model.target();
+	}
+
+	if (IsPort(connData)) {
 		return GetPortDirection(linkView, type);
 	} else {
 		return GetPointDirection(linkView, type);
@@ -79,6 +88,7 @@ function CustomManhattanRouter(vertices: g.Point[], args: ICustomManhattanArgs, 
 	if (GetStatus(linkView) === "connected") {
 		_route(result, src, srcDir, trg, trgDir);
 		result = result.reverse().slice(0, result.length - 1);
+		console.log(linkView.model.target());
 	}
 	
 	return result;

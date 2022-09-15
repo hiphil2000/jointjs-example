@@ -22,6 +22,12 @@ const paper = new ScrollPaper({
 	cellViewNamespace: nameSpace,
 	width: 1000,
 	height: 1000,
+	// 링크의 Source 혹은 Target 이 Point가 될 수 있는지 여부를 설정합니다.
+	// https://resources.jointjs.com/docs/jointjs/v3.5/joint.html#dia.Paper.prototype.options.linkPinning
+	// https://groups.google.com/g/jointjs/c/vwGWDFWVDJI
+	linkPinning: false,
+	// Cell의 Draggable 여부를 처리합니다.
+	// 실험적 코드
 	interactive: (cellview, event) => {
 		if (cellview.model.isElement()) {
 			if (cellview.model.attributes["draggable"] === false) {
@@ -33,20 +39,25 @@ const paper = new ScrollPaper({
 	},
     // defaultRouter: { name: 'orthogonal' },
     defaultRouter: CustomManhattanRouter,
-	defaultLink: (cell, magnet) => {
-		const link = new shapes.standard.Link();
-		link.connector("rounded");
-		link.attr({
+	defaultLink: () => new shapes.standard.Link({
+		attrs: {
 			line: {
 				stroke: "rgb(0, 168, 240)",
 				strokeWidth: 2
-			},
-			
-		});
+			}
+		},
+		connector: { name: "rounded" }
+	}),
+	validateConnection(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
+		// Connection의 유효성을 검사합니다.
+		// 참조: https://resources.jointjs.com/tutorial/ports > Linking restriction
 
-		return link;
+		// Source와 Target이 모두 "relation" 인 경우에만 연결합니다.
+		const srcRelation = magnetS?.getAttribute("port-group") === "relation";
+		const trgRelation = magnetT?.getAttribute("port-group") === "relation";
+
+		return srcRelation && trgRelation;
 	},
-	gridSize: 10
 } as IScrollPaperOptions);
 
 // DRAW GRID
@@ -58,16 +69,11 @@ paper.drawGrid({
 
 // EVENTS
 graph.on("add", (cell: dia.Cell) => {
-	if (cell.attributes.type === "standard.Link") {
+	if (cell.isLink()) {
 		const linkView = cell.findView(paper.paper) as dia.LinkView;
 		linkView.addTools(new dia.ToolsView({
 			tools: [
-				new linkTools.Vertices({
-					redundancyRemoval: false,
-					snapRadius: 10,
-					vertexAdding: false,
-				}),
-				new linkTools.Remove()
+				new linkTools.Remove({distance: "10%"}),
 			]
 		}));
 
@@ -75,11 +81,15 @@ graph.on("add", (cell: dia.Cell) => {
 	}
 });
 
+// 링크의 하이라이팅 처리
 paper.paper.on("link:mouseover", (cellView: dia.CellView) => {
 	cellView.model.attr("line/strokeWidth", 4);
 });
 paper.paper.on("link:mouseout", (cellView: dia.CellView) => {
 	cellView.model.attr("line/strokeWidth", 2);
+});
+paper.paper.on("link:connect", (linkView: dia.LinkView) => {
+	console.log(linkView);
 });
 
 // GENERATE TABLES
