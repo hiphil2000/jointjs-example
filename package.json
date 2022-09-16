@@ -8,8 +8,7 @@
   "license": "ISC",
   "scripts": {
     "start": "webpack serve",
-    "build": "webpack --mode=production",
-    "tsc": "tsc"
+    "build": "webpack --mode=production"
   },
   "devDependencies": {
     "@types/backbone": "^1.4.15",
