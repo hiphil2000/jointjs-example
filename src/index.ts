@@ -1,5 +1,5 @@
 import { dia, linkTools, shapes } from 'jointjs';
-import Table, {ITableRow, TableView} from "./elements/Table";
+import {Table, TableView, ITableRow} from "./elements/table";
 import ScrollPaper, { IScrollPaperOptions } from "./mvc/scroll-paper/ScrollPaper";
 import CustomManhattanRouter from "./router/CustomManhattanRouter";
 
@@ -101,7 +101,7 @@ for(let i = 0; i < 10; i++) {
 	}
 
 	const table = new Table({
-		attrs: {".table_name": {text: "Table_" + i}},
+		attrs: {".name": {text: "Table_" + i}},
 		rows: rows,
 		position: {x: 50 + 250 * (i % 5), y: 50 + 350 * Math.floor(i / 5)}
 	});
