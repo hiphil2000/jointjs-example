@@ -8,31 +8,6 @@ export interface ITableRow {
 	type: string;
 }
 
-const rowDefaults = {
-	markup: `
-		<g class="table-row">
-			<rect class="table-row-body" />
-			<label class="table-row-label row-name" />
-			<label class="table-row-label row-type" />
-		</g>
-	`,
-	attrs: {
-		".table-row-body": {
-			refWidth: "200px",
-			fill: "#FFFFFF",
-			stroke: "#000000",
-			strokeWidth: "1",
-		},
-		".table-row-label": {
-			fontFamily: "Arial",
-			fontSize: 11,
-			stroke: "none",
-			fill: "#000000",
-			yAlignment: "middle"
-		}
-	},
-} as dia.Element.PortGroup
-
 export default class Table extends dia.Element {
 	static readonly TABLE_MARKUP = [
 		'<rect class="body" />',
@@ -63,6 +38,7 @@ export default class Table extends dia.Element {
 					fontSize: 13,
 					stroke: "none",
 					fill: "#000000",
+					pointerEvents: "none",
 				},
 				".body": {
 					refWidth: "100%",
@@ -186,7 +162,10 @@ export class TableView extends dia.ElementView {
 
 	events(): EventsHash {
 		return {
-			"pointerdown": "onAddRow",
+			"pointerdown": "onPointerDown",
+			"pointerup": "onPointerUp",
+			"mouseover": "onMouseOver",
+			"mouseout": "onMouseOut",
 		}
 	}
 
@@ -248,10 +227,35 @@ export class TableView extends dia.ElementView {
 		this.update();
 	}
 
-	protected onAddRow(e:any):void {
-		console.log( e.target);
-		if (e.originalEvent.path.find(x => x.classList?.contains("row")) != undefined) {
+	private isRowEvent(e: any): boolean {
+		return e.target.classList.contains("row-body");
+	}
+
+	protected onPointerDown(e:any):void {
+		console.log(e.target);
+		if (this.isRowEvent(e)) {
 			e.preventDefault();
+		}
+	}
+
+	protected onPointerUp(e:any):void {
+		console.log(e.target);
+		if (this.isRowEvent(e)) {
+			e.preventDefault();
+		}
+	}
+	
+	protected onMouseOver(e: any): void {
+		console.log(e.target);
+		if (this.isRowEvent(e)) {
+			console.log("over");
+		}
+	}
+
+	protected onMouseOut(e: any): void {
+		console.log(e.target);
+		if (this.isRowEvent(e)) {
+			console.log("out");
 		}
 	}
 }
