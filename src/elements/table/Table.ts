@@ -1,5 +1,5 @@
 import { EventsHash } from "backbone";
-import { dia, g, V, VElement } from "jointjs";
+import { dia, g, shapes, V, VElement } from "jointjs";
 import { v4 } from "uuid";
 
 export interface ITableRow {
@@ -232,31 +232,49 @@ export class TableView extends dia.ElementView {
 	}
 
 	protected onPointerDown(e:any):void {
-		console.log(e.target);
+		const target = e.target as SVGGraphicsElement;
+
 		if (this.isRowEvent(e)) {
 			e.preventDefault();
+			const {x, y, width, height} = target.getBBox();
+			const link = new dia.Link();
+			link.source(target.getBBox());
+			link.target({
+				...target.getBBox(),
+				x: x + 200
+			})
+			link.addTo(this.paper.model);
+			// const link = new dia.Link();
+			// link.source(new shapes.standard.Rectangle({
+			// 	size: e.width()
+			// }));
+			// link.target({
+			// 	x: e.offsetX + 200,
+			// 	y: e.offsetY
+			// });
+			// link.addTo(this.paper.model);
 		}
 	}
 
 	protected onPointerUp(e:any):void {
-		console.log(e.target);
-		if (this.isRowEvent(e)) {
-			e.preventDefault();
-		}
+		// console.log(e.target);
+		// if (this.isRowEvent(e)) {
+		// 	e.preventDefault();
+		// }
 	}
 	
 	protected onMouseOver(e: any): void {
-		console.log(e.target);
-		if (this.isRowEvent(e)) {
-			console.log("over");
-		}
+		// console.log(e.target);
+		// if (this.isRowEvent(e)) {
+		// 	console.log("over");
+		// }
 	}
 
 	protected onMouseOut(e: any): void {
-		console.log(e.target);
-		if (this.isRowEvent(e)) {
-			console.log("out");
-		}
+		// console.log(e.target);
+		// if (this.isRowEvent(e)) {
+		// 	console.log("out");
+		// }
 	}
 }
 

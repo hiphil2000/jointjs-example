@@ -92,6 +92,10 @@ paper.paper.on("link:connect", (linkView: dia.LinkView) => {
 	console.log(linkView);
 });
 
+paper.paper.on("element:pointermove", (cellView: dia.CellView, evt) => {
+	console.log("!");
+})
+
 // GENERATE TABLES
 for(let i = 0; i < 10; i++) {
 
